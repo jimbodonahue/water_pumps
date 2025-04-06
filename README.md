@@ -67,3 +67,32 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 - source_class - The source of the water
 - waterpoint_type - The kind of waterpoint
 - waterpoint_type_group - The kind of waterpoint
+
+# 📊 Initial Data Exploration Summary
+
+## ✅ Dataset Overview
+- The training dataset contains **59,400 rows** and **40 features**.
+- A separate labels file includes the `status_group` target column (pump functionality).
+
+## 🧾 Data Types Summary
+
+| Type     | Count | Description                             |
+|----------|-------|-----------------------------------------|
+| `object` | 30    | Categorical or string-type columns      |
+| `int64`  | 7     | Integer columns (e.g., year, region)    |
+| `float64`| 3     | Float columns (e.g., coordinates)       |
+
+> This breakdown helps identify which features need encoding, scaling, or special handling during preprocessing.
+
+## 🧠 Key Observations from `.describe()`
+
+- **Skewed distributions** observed in  `amount_tsh`, `population`, and `construction_year` features.
+- **Zero values** in `gps_height`, `longitude`, and `latitude` likely indicate **missing or invalid data**.
+- `num_private` appears to have **mostly zero values**, and may be **dropped** if uninformative.
+
+## 🔜 Next Steps
+
+- Visualize key feature distributions and their relationship with `status_group`.
+- Handle missing values appropriately.
+- Prepare categorical variables for modeling (encoding).
+- Begin geospatial and correlation analysis.

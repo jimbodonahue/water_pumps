@@ -5,15 +5,7 @@ import geopandas as gpd # geospatial data processing
 import matplotlib.pyplot as plt # standard plotting packages
 import seaborn as sns
 import os
-
-# Build path to data folder
-path = os.path.join(os.path.dirname(__file__), '..', 'data')
-
-# Read the files
-train = pd.read_csv(os.path.join(path, 'train.csv'))
-test = pd.read_csv(os.path.join(path, 'test.csv'))
-labels = pd.read_csv(os.path.join(path, 'train_labels.csv'))
-
+import seaborn as sns
 # Build path to data folder
 path = os.path.join(os.path.dirname(__file__), '..', 'data')
 
@@ -30,3 +22,6 @@ print("\nTrain columns:")
 print(train.columns)
 
 #Initial exploring, missing values
+print(train.dtypes.value_counts())
+print(train.describe().T)
+
