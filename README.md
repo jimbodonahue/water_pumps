@@ -68,7 +68,7 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 - `waterpoint_type` - The kind of waterpoint
 - `waterpoint_type_group` - The kind of waterpoint
 
-# 📊 Initial Data Exploration Summary
+# 📊 Initial Data Exploration & First Impressions  
 
 ## ✅ Dataset Overview
 - The training dataset contains **59,400 rows** and **40 features**.
@@ -83,11 +83,18 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 | `float64`| 3     | Float columns (e.g., coordinates)       |
 
 
-## 🧠 Key Observations from `.describe()`
+## 🧠 Key Observations from `.describe()` and `.head()`
 
 - **Skewed distributions** observed in  `amount_tsh`, `population`, and `construction_year` features.
 - **Zero values** in `gps_height`, `longitude`, and `latitude` likely indicate **missing or invalid data**.
 - `num_private` appears to have **mostly zero values**, and may be **dropped** if uninformative.
+-  Most features are **categorical (`object`)** – 30 out of 40 columns
+-   Repetitive features like `extraction_type`, `extraction_type_group`, and `extraction_type_class` might offer **redundant information**
+  
+### 📌 Summary
+- The dataset has **less unique information than it first appears**
+- Careful handling of missing values, feature selection, and encoding will be needed before modeling
+- Geospatial features (lat/lon) offer opportunities for external enrichment like weather or population data
 
 ## 🔜 Next Steps
 
