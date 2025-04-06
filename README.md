@@ -82,7 +82,6 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 | `int64`  | 7     | Integer columns (e.g., year, region)    |
 | `float64`| 3     | Float columns (e.g., coordinates)       |
 
-> This breakdown helps identify which features need encoding, scaling, or special handling during preprocessing.
 
 ## 🧠 Key Observations from `.describe()`
 
