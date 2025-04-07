@@ -105,3 +105,13 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
 - Cleaned the pump data by removing rows with missing latitude or longitude
 - Converted the cleaned data into a GeoDataFrame
 - Plotted pump locations over a population-colored map of Tanzania
+# Data cleaning and preparation
+
+### 🧼 Missing Value Handling: Construction Year
+
+- Replaced invalid `0` values in `construction_year` with `NaN`
+- Imputed missing values in three steps:
+  1. Used **median construction year** per **region + installer** combination
+  2. For remaining missing values, used **region-level median**
+  3. For any still missing, used the fallback: `recorded_year - 5`, based on data distribution
+- This strategy filled all 20,709 missing entries using a context-aware approach

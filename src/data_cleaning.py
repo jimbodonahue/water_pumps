@@ -51,7 +51,7 @@ gdf_pumps = gpd.GeoDataFrame(
     crs="EPSG:4326"
 )
 gdf_pumps = gdf_pumps.to_crs(tanzania.crs)
-fig, ax = plt.subplots(figsize=(4, 4))
+fig, ax = plt.subplots(figsize=(40, 40))
 
 # Plot Tanzania base
 tanzania.plot(ax= ax, column='POPULATION',legend=True, legend_kwds={"label": "Population in 2012", "orientation": "vertical"})
@@ -72,3 +72,4 @@ plt.legend(title="Pump Status")
 plt.axis('off')
 plt.show()
 fig.savefig("outputs/water_pumps_population_map.png", dpi=300, bbox_inches='tight')
+df.to_csv("data/cleaned_data_V1.csv", index=False)
