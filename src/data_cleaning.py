@@ -52,15 +52,23 @@ gdf_pumps = gpd.GeoDataFrame(
 )
 gdf_pumps = gdf_pumps.to_crs(tanzania.crs)
 fig, ax = plt.subplots(figsize=(4, 4))
-# Plot Tanzania base
 
 # Plot Tanzania base
-tanzania.plot(ax= ax, column='POPULATION',legend=True)
+tanzania.plot(ax= ax, column='POPULATION',legend=True, legend_kwds={"label": "Population in 2012", "orientation": "vertical"})
 
 # Plot pump points
-gdf_pumps.plot(ax= ax, markersize=0.5, alpha=0.1, color='black')
+# Custom status colors
+status_colors = {
+    'functional': 'black',                 
+    'functional needs repair': 'yellow',
+    'non functional': 'orange'
+}
+
+for status, color in status_colors.items():
+    gdf_pumps[gdf_pumps['status_group']== status].plot(ax= ax,column='status_group', markersize=1.5, alpha=0.7,color=color, label=status )
 
 plt.title("Water Pump Locations in Tanzania")
+plt.legend(title="Pump Status")
 plt.axis('off')
 plt.show()
 fig.savefig("outputs/water_pumps_population_map.png", dpi=300, bbox_inches='tight')
