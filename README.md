@@ -96,9 +96,12 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 - Careful handling of missing values, feature selection, and encoding will be needed before modeling
 - Geospatial features (lat/lon) offer opportunities for external enrichment like weather or population data
 
-## 🔜 Next Steps
+## 🗺️ Geospatial Visualization
 
-- Visualize key feature distributions and their relationship with `status_group`.
-- Handle missing values appropriately.
-- Prepare categorical variables for modeling (encoding).
-- Begin geospatial and correlation analysis.
+We created a basic geospatial map of water pumps across Tanzania using `geopandas`.
+
+### Key Steps:
+- Used the shapefile from https://www.nbs.go.tz/statistics/topic/gis
+- Cleaned the pump data by removing rows with missing latitude or longitude
+- Converted the cleaned data into a GeoDataFrame
+- Plotted pump locations over a population-colored map of Tanzania

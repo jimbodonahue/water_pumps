@@ -37,4 +37,30 @@ df['longitude'] = df['longitude'].replace(0, np.nan)
 print("Missing values after cleaning invalid numeric entries:")
 print(df[['construction_year', 'gps_height', 'longitude']].isnull().sum())
 
+# Load the Tanzania boundary map
+tanzania = gpd.read_file("gis/Tanzania.shp")
+# Quick preview
+print(tanzania.head())
 
+# Filter out missing lat/lon rows
+df_valid = df.dropna(subset=['longitude', 'latitude'])
+# Create a GeoDataFrame for pumps
+gdf_pumps = gpd.GeoDataFrame(
+    df_valid,
+    geometry=gpd.points_from_xy(df_valid.longitude, df_valid.latitude),
+    crs="EPSG:4326"
+)
+gdf_pumps = gdf_pumps.to_crs(tanzania.crs)
+fig, ax = plt.subplots(figsize=(4, 4))
+# Plot Tanzania base
+
+# Plot Tanzania base
+tanzania.plot(ax= ax, column='POPULATION',legend=True)
+
+# Plot pump points
+gdf_pumps.plot(ax= ax, markersize=0.5, alpha=0.1, color='black')
+
+plt.title("Water Pump Locations in Tanzania")
+plt.axis('off')
+plt.show()
+fig.savefig("outputs/water_pumps_population_map.png", dpi=300, bbox_inches='tight')
