@@ -95,7 +95,15 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 - The dataset has **less unique information than it first appears**
 - Careful handling of missing values, feature selection, and encoding will be needed before modeling
 - Geospatial features (lat/lon) offer opportunities for external enrichment like weather or population data
-
+- 
+## 🧠 Observations from visualizing variables
+- Some regions seem to have much better luck than others
+- `quantity` could be a useful binary (enough, else), or even three?
+- `management_group` does not seem to have an effect on the distribution. Nor does `permit`
+- `quality_group` does not seem to bring much, as there are probably not enough "bad" observations. Similar with `waterpoint_type_group` (maybe?), `extraction_type_class`
+- There's a strong case for a binary `payment` variable. Also `source`
+- The watershed variabe `basin` might be good but may simply reflect seasonality captured in `quantity`
+- 
 ## 🗺️ Geospatial Visualization
 
 We created a basic geospatial map of water pumps across Tanzania using `geopandas`.
