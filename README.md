@@ -123,12 +123,24 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
   2. For remaining missing values, used **region-level median**
   3. For any still missing, used the fallback: `recorded_year - 5`, based on data distribution
 - This strategy filled all 20,709 missing entries using a context-aware approach
-### 🧼 Missing Value Handling: `longitude`
+## 🧼 Missing Value Handling: `longitude`
 
 - Replaced invalid longitude values (`0` or negative) with `NaN`
-- Imputed missing values (**1,812 entries**) in two steps:
-  1. **Median per (`region`, `district_code`)** — filled 1,324 values
-  2. **Median per `region`** — filled remaining 488 values
-- ✅ Result: All longitude values filled, no rows dropped
-- 📁 Output saved as: `data/cleaned_data_filled_V2.csv`
-### After longitude imputation, the pump distribution remained largely consistent, indicating that missingness was scattered and not biased toward specific regions.
+- Imputed 1,812 missing longitude values in two steps:
+  1. Median per (`region`, `district_code`)
+  2. Median per `region` (as fallback)
+- This accounted for ~3% of the total data (59,400 pumps)
+- While the map appearance remained largely unchanged, imputing these values ensures:
+  - All pumps are included in geospatial analysis
+  - No data is lost due to missing coordinates
+  - Visualizations and models are complete and unbiased
+- Output saved as: `data/cleaned_data_filled_V2.csv` 
+### 🧼 Missing Value Handling: `gps_height`
+- Replaced invalid `gps_height` values (≤ 0) with `NaN`
+- Total filled entries: **21,934** (~37% of dataset)
+- Imputed values using a two-step geographic approach:
+  1. Median per `basin` (hydrological unit)
+  2. Median per `region` (fallback)
+-  No values left missing
+- Output saved as: 'data/cleaned_data_filled_V3.csv'
+- This method ensures geographic consistency by reflecting local altitude patterns

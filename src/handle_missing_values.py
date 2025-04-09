@@ -63,3 +63,33 @@ print("Missing longitude after filling:", df['longitude'].isna().sum())
 # Save updated version
 df.to_csv("data/cleaned_data_filled_V2.csv", index=False)
 print("Cleaned data saved to data/cleaned_data_filled_V2.csv")
+missing = df.isnull().sum()
+missing = missing[missing > 0].sort_values(ascending=False)
+print("Columns still missing values:\n")
+print(missing)
+
+# filling missing values for gps_height
+
+# Replace invalid gps_height values (e.g. 0 or negative)
+df['gps_height'] = df['gps_height'].apply(lambda x: np.nan if x <= 0 else x)
+
+missing_gps_before = df['gps_height'].isna().sum()
+print("Missing before gps_height:", missing_gps_before)
+
+# Fill using median per basin
+df['gps_height'] = df.groupby('basin')['gps_height'].transform(
+    lambda x: x.fillna(x.median())
+)
+
+# Fill any still missing using region median
+df['gps_height'] = df.groupby('region')['gps_height'].transform(
+    lambda x: x.fillna(x.median())
+)    
+
+
+missing_gps_after = df['gps_height'].isna().sum()
+print("Missing after gps_height:", missing_gps_after)
+print("Filled gps_height:", missing_gps_before - missing_gps_after)
+df.to_csv("data/cleaned_data_filled_V3.csv", index=False)
+print("Saved updated dataset to data/cleaned_data_filled_V3.csv")
+# filling population
