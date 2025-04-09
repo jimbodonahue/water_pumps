@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 # Load cleaned base data from data_cleaning.py
 path = os.path.join(os.path.dirname(__file__), '..', 'data')
@@ -10,7 +11,7 @@ df = pd.read_csv(os.path.join(path,'cleaned_data_V1.csv'))
 
 # Analyze missingness
 missing = df.isnull().sum()
-print("Missing values:\n", missing[missing > 0])
+print("Missing values_construction_year:\n", missing[missing > 0])
 # Handelling missing year
 # Save original missing count
 missing_before = df['construction_year'].isna().sum()
@@ -41,7 +42,24 @@ df['construction_year'] = df.groupby('region')['construction_year'].transform(
 #Use recorded year - 5
 df['construction_year'] = df['construction_year'].fillna(df['recorded_year'] - 5)
 missing_after = df['construction_year'].isna().sum()
-print("Missing after:", missing_after)
+print("Missing after_construction_year:", missing_after)
 filled_count = missing_before - missing_after
-print("Filled:", filled_count)
+print("Filled_construction_year:", filled_count)
 df.to_csv("data/cleaned_data_filled.csv", index=False)
+
+print(df['longitude'].describe())
+print("latitudeb and longitude missing value before:",df[['latitude', 'longitude']].isnull().sum())
+#filling the missing longitude values using info from other pumps in the same region and district
+df['longitude']= df.groupby(['region', 'district_code'])['longitude'].transform(
+    lambda x: x.fillna(x.median())
+)
+
+#Filling the remaining missing values with the median longitude of the entire region:
+df['longitude'] = df.groupby('region')['longitude'].transform(
+    lambda x: x.fillna(x.median())
+)
+
+print("Missing longitude after filling:", df['longitude'].isna().sum())
+# Save updated version
+df.to_csv("data/cleaned_data_filled_V2.csv", index=False)
+print("Cleaned data saved to data/cleaned_data_filled_V2.csv")

@@ -115,3 +115,11 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
   2. For remaining missing values, used **region-level median**
   3. For any still missing, used the fallback: `recorded_year - 5`, based on data distribution
 - This strategy filled all 20,709 missing entries using a context-aware approach
+### 🧼 Missing Value Handling: `longitude`
+
+- Replaced invalid longitude values (`0` or negative) with `NaN`
+- Imputed missing values (**1,812 entries**) in two steps:
+  1. **Median per (`region`, `district_code`)** — filled 1,324 values
+  2. **Median per `region`** — filled remaining 488 values
+- ✅ Result: All longitude values filled, no rows dropped
+- 📁 Output saved as: `data/cleaned_data_filled_V2.csv`
