@@ -97,7 +97,7 @@ The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregate
 - Geospatial features (lat/lon) offer opportunities for external enrichment like weather or population data
 - 
 ## 🧠 Observations from visualizing variables
-  -Some regions seem to have much better luck than others
+- Some regions seem to have much better luck than others
 - `quantity` could be a useful binary (enough, else), or even three?
 - `management_group` does not seem to have an effect on the distribution. Nor does `permit`
 - `quality_group` does not seem to bring much, as there are probably not enough "bad" observations. Similar with `waterpoint_type_group` (maybe?), `extraction_type_class`
