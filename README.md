@@ -123,3 +123,4 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
   2. **Median per `region`** — filled remaining 488 values
 - ✅ Result: All longitude values filled, no rows dropped
 - 📁 Output saved as: `data/cleaned_data_filled_V2.csv`
+### After longitude imputation, the pump distribution remained largely consistent, indicating that missingness was scattered and not biased toward specific regions.
