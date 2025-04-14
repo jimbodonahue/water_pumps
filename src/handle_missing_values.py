@@ -114,4 +114,5 @@ sns.histplot(df['population'], bins=50, kde=True)
 plt.xlim(0, 10000)  # Focus on lower range
 plt.title("Population Distribution Around Water Pumps afterclipping")
 plt.savefig("outputs/population_distribution_after_clipping.png", dpi=300, bbox_inches='tight')
+df.to_csv("data/cleaned_data_filled_V5.csv", index=False)
 plt.show()
