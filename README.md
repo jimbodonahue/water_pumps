@@ -144,3 +144,21 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
 -  No values left missing
 - Output saved as: 'data/cleaned_data_filled_V3.csv'
 - This method ensures geographic consistency by reflecting local altitude patterns
+
+### 🧼 Missing Value Handling: `population`
+- Replaced invalid values (`0`) with `NaN`
+- Total filled entries: **21,381** (~36% of the dataset)
+- Used a two-step geographic imputation:
+  1. Median per `district_code`
+  2. Median per `region` (fallback)
+- After imputation, all missing values were filled
+- As an additional step, we capped population values at **2,500**, based on domain knowledge and national-level population density in Tanzania
+  - This avoids skew from unusually large or erroneous values
+  #### 📉 Population Clipping
+- Capped population values at **1,999** based on:
+  - Distribution analysis
+  - Realistic rural/urban estimates for Tanzania
+- This prevents model distortion caused by a small number of extreme outliers
+- Saved before/after distribution plots in `outputs/` folder:
+  - `population_distribution_before_clipping.png`
+  - `population_distribution_after_clipping.png`
