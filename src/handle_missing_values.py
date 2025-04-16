@@ -103,7 +103,6 @@ df['population'] = df.groupby('region')['population'].transform(
 
 df.to_csv("data/cleaned_data_filled_V4.csv", index=False)
 
-
 sns.histplot(df['population'], bins=50, kde=True)
 plt.xlim(0, 10000)  # Focus on lower range
 plt.title("Population Distribution Around Water Pumps")
