@@ -10,17 +10,17 @@ import seaborn as sns
 path = os.path.join(os.path.dirname(__file__), '..', 'data')
 
 # Read the files
-df = pd.read_csv(os.path.join(path, 'cleaned_data_filled_V2.csv'))
+df = pd.read_csv(os.path.join(path,'pumps_with_Imputed_Coordinates.csv'))
 
 # Load the Tanzania boundary map
 tanzania = gpd.read_file("gis/Tanzania.shp")
 
 # Filter out missing lat/lon rows
-df_valid = df.dropna(subset=['longitude', 'latitude'])
+df_valid = df.dropna(subset=['latitude_diff', 'latitude_diff'])
 # Create a GeoDataFrame for pumps
 gdf_pumps = gpd.GeoDataFrame(
     df_valid,
-    geometry=gpd.points_from_xy(df_valid.longitude, df_valid.latitude),
+    geometry=gpd.points_from_xy(df_valid.longitude_diff, df_valid.latitude_diff),
     crs="EPSG:4326"
 )
 gdf_pumps = gdf_pumps.to_crs(tanzania.crs)
@@ -44,4 +44,4 @@ plt.title("Water Pump Locations in Tanzania(Imputed Coordinates)")
 plt.legend(title="Pump Status")
 plt.axis('off')
 plt.show()
-fig.savefig("outputs/water_pumps_map_V2.png", dpi=300, bbox_inches='tight')
+fig.savefig("outputs/pumps_with_Imputed_Coordinates.png", dpi=300, bbox_inches='tight')
