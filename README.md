@@ -123,17 +123,10 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
   2. For remaining missing values, used **region-level median**
   3. For any still missing, used the fallback: `recorded_year - 5`, based on data distribution
 - This strategy filled all 20,709 missing entries using a context-aware approach
-## 🧼 Missing Value Handling: `longitude`
+## 🧼 Missing Value Coordinate: `longitude` and `Longitude`
+During data preprocessing, we identified a large number of water pumps with invalid or highly suspicious latitude values, such as -2e-08, which caused them to appear far outside of Tanzania’s geographic boundaries. Initially, we attempted to impute these missing GPS coordinates using grouped medians based on geographic features such as region, district_code, ward, and lga. However, this approach resulted in many identical coordinate clusters that still fell outside the Tanzanian borders.
 
-- Replaced invalid longitude values (`0` or negative) with `NaN`
-- Imputed 1,812 missing longitude values in two steps:
-  1. Median per (`region`, `district_code`)
-  2. Median per `region` (as fallback)
-- This accounted for ~3% of the total data (59,400 pumps)
-- While the map appearance remained largely unchanged, imputing these values ensures:
-  - All pumps are included in geospatial analysis
-  - No data is lost due to missing coordinates
-  - Visualizations and models are complete and unbiased
+To ensure the spatial integrity of the dataset, we ultimately decided to remove all rows with invalid or missing latitude/longitude values. Specifically, latitude values outside the valid range for Tanzania (between -15 and 0) or extremely close to zero (i.e., abs(latitude) < 0.1) were treated as invalid and excluded. This ensures that all remaining records represent real, mappable locations within Tanzania.
 - Output saved as: `data/cleaned_data_filled_V2.csv` 
 ### 🧼 Missing Value Handling: `gps_height`
 - Replaced invalid `gps_height` values (≤ 0) with `NaN`
@@ -162,3 +155,33 @@ We created a basic geospatial map of water pumps across Tanzania using `geopanda
 - Saved before/after distribution plots in `outputs/` folder:
   - `population_distribution_before_clipping.png`
   - `population_distribution_after_clipping.png`
+
+  ## 🔍 Exploratory Regression Analysis
+
+As part of our initial data exploration, we ran a basic linear regression using `statsmodels` to examine how a few numeric features relate to the functionality of water pumps.
+
+### ✅ What We Did
+
+- Loaded cleaned data from `cleaned_data_filled_V5.csv`.
+- Used five numerical features:
+  - `amount_tsh` (water availability)
+  - `gps_height` (altitude)
+  - `population` (population around the pump)
+  - `construction_year` (normalized)
+  - `num_private`
+- Mapped the target variable `status_group` into numeric codes:
+  - `2` = functional
+  - `1` = functional needs repair
+  - `0` = non functional
+- Ran an OLS (Ordinary Least Squares) regression model using `statsmodels`.
+
+### 📊 Key Findings
+
+- All features were statistically significant (p < 0.05).
+- The most important predictor was `construction_year` — newer pumps tend to be more functional.
+- The model had a low R² (~0.05), meaning the features only explain about 5% of the variance in pump status. This is expected, since we're simplifying a classification problem using linear regression.
+
+### ⚠️ Notes
+
+- This was purely exploratory — not meant for prediction.
+- In future steps, a classification model (e.g. Random Forest) would be more appropriate.
