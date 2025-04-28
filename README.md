@@ -155,33 +155,47 @@ To ensure the spatial integrity of the dataset, we ultimately decided to remove 
 - Saved before/after distribution plots in `outputs/` folder:
   - `population_distribution_before_clipping.png`
   - `population_distribution_after_clipping.png`
+#### 📉 amount_tsh Capping
 
-  ## 🔍 Exploratory Regression Analysis
+- Identified extreme outliers in the `amount_tsh` feature (some values > 100,000).
+- To reduce the impact of these extreme values, **capped `amount_tsh` at 15,000**.
+- Created a new feature called **`amount_tsh_capped`** containing the capped values.
+- Saved the updated dataset as **`cleaned_data_filled_V5.csv`**.
+- This step ensures that later modeling processes (especially regression models) are not dominated by rare extreme measurements.
+
+## 🔍 Exploratory Regression Analysis
 
 As part of our initial data exploration, we ran a basic linear regression using `statsmodels` to examine how a few numeric features relate to the functionality of water pumps.
 
 ### ✅ What We Did
 
-- Loaded cleaned data from `cleaned_data_filled_V5.csv`.
+- Loaded cleaned data from `cleaned_data_filled_V6.csv`.
+
 - Used five numerical features:
-  - `amount_tsh` (water availability)
+  - `amount_tsh_capped` (capped water availability)
   - `gps_height` (altitude)
   - `population` (population around the pump)
   - `construction_year` (normalized)
   - `num_private`
+- Normalized (standardized) the following features:
+  - `amount_tsh_capped`
+  - `construction_year`
 - Mapped the target variable `status_group` into numeric codes:
   - `2` = functional
   - `1` = functional needs repair
   - `0` = non functional
-- Ran an OLS (Ordinary Least Squares) regression model using `statsmodels`.
+- Ran an OLS (Ordinary Least Squares) regression model using `statsmodels` with normalized features.
 
 ### 📊 Key Findings
 
-- All features were statistically significant (p < 0.05).
-- The most important predictor was `construction_year` — newer pumps tend to be more functional.
-- The model had a low R² (~0.05), meaning the features only explain about 5% of the variance in pump status. This is expected, since we're simplifying a classification problem using linear regression.
+- `amount_tsh_capped`, `gps_height`, `population`, and `construction_year` were statistically significant predictors (p < 0.05).
+- `num_private` was **not statistically significant**.
+- The most important predictors were `gps_height` and `amount_tsh_capped`.
+- The model had a low R² (~0.024), meaning the features only explain about 2.4% of the variance in pump status.
+- This low R² suggests that linear regression is not sufficient for this classification problem.
 
 ### ⚠️ Notes
 
-- This was purely exploratory — not meant for prediction.
-- In future steps, a classification model (e.g. Random Forest) would be more appropriate.
+- This analysis was purely exploratory — not meant for prediction.
+- In future steps, a classification model (e.g., Random Forest, XGBoost) will be used to better capture nonlinear relationships and improve performance.
+
