@@ -199,3 +199,28 @@ As part of our initial data exploration, we ran a basic linear regression using 
 - This analysis was purely exploratory — not meant for prediction.
 - In future steps, a classification model (e.g., Random Forest, XGBoost) will be used to better capture nonlinear relationships and improve performance.
 
+# Sprint 2
+
+## 🛠️ Feature Engineering (Task 2.1)
+
+As part of Ticket 2.1.1 and 2.1.2, we applied domain knowledge and data exploration insights to improve feature quality before modeling.
+
+### ✅ Feature Creation (Ticket 2.1.1)
+- Created `water_risk_score` by combining `amount_tsh_capped` (water quantity) and a numerical encoding of `water_quality`.
+- Generated `pump_age` from `construction_year` to represent the pump's operational age.
+
+### ✅ Feature Transformation (Ticket 2.1.2)
+- Identified and handled heavy skewness through `log1p` transformation of:
+  - `amount_tsh`
+  - `amount_tsh_capped`
+  - `population`
+  - `water_risk_score`
+  - `pump_age`
+- Created new columns with `_log` suffix to preserve the original data.
+- Detected that `num_private` was extremely sparse (mostly 0), and therefore:
+  - Replaced it with a new binary feature `has_private_owner` (1 if private ownership exists, 0 otherwise).
+
+### 📦 Data Saving
+- Saved the updated dataset after feature engineering as `feature_engineered_data_V1.csv`.
+- This version will be used as the basis for further feature selection and modeling.
+
