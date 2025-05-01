@@ -162,6 +162,10 @@ To ensure the spatial integrity of the dataset, we ultimately decided to remove 
 - Created a new feature called **`amount_tsh_capped`** containing the capped values.
 - Saved the updated dataset as **`cleaned_data_filled_V5.csv`**.
 - This step ensures that later modeling processes (especially regression models) are not dominated by rare extreme measurements.
+### 🧼 Handling Missing Categorical Values
+
+To ensure the dataset is clean and suitable for machine learning models, missing values in categorical columns were filled with a placeholder value `'Unknown'`. This allows us to retain all rows without dropping data or introducing statistical bias.
+
 
 ## 🔍 Exploratory Regression Analysis
 
