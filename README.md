@@ -217,7 +217,6 @@ As part of Ticket 2.1.1 and 2.1.2, we applied domain knowledge and data explorat
 - Identified and handled heavy skewness through `log1p` transformation of:
   - `amount_tsh`
   - `amount_tsh_capped`
-  - `population`
   - `water_risk_score`
   - `pump_age`
 - Created new columns with `_log` suffix to preserve the original data.
@@ -228,3 +227,22 @@ As part of Ticket 2.1.1 and 2.1.2, we applied domain knowledge and data explorat
 - Saved the updated dataset after feature engineering as `feature_engineered_data_V1.csv`.
 - This version will be used as the basis for further feature selection and modeling.
 
+## 🔍 Numerical Feature Correlation Analysis
+
+We performed Spearman correlation analysis to identify potential redundancy among numerical features. The goal was to reduce multicollinearity and keep only the most informative features.
+
+### ✅ Observations:
+
+
+- **`construction_year`** and **`pump_age`** had a perfect negative correlation (-1.00).  
+  → We kept `pump_age` and dropped `construction_year` as it is easier to interpret and more useful for modeling.
+
+- **`amount_tsh_log`**, **`amount_tsh_capped_log`**, and **`water_risk_score_log`** were all perfectly correlated (~1.00).  
+  → We retained only `water_risk_score_log` to avoid redundancy.
+
+- Features like **`gps_height`**, **`latitude`**, **`longitude`**, **`population_log`**, and **`has_private_owner`** showed low correlation with others and were retained for modeling.
+- selected columns to drop: `num_private`,`construction_year`,`amount_tsh_log`, `amount_tsh_capped_log`,
+
+### 💡 Conclusion:
+
+This step helped us remove highly correlated features to simplify the model and prevent multicollinearity issues. We now move on to evaluating relationships between **categorical** and **numerical** variables
