@@ -243,6 +243,15 @@ We performed Spearman correlation analysis to identify potential redundancy amon
 - Features like **`gps_height`**, **`latitude`**, **`longitude`**, **`population_log`**, and **`has_private_owner`** showed low correlation with others and were retained for modeling.
 - selected columns to drop: `num_private`,`construction_year`,`amount_tsh_log`, `amount_tsh_capped_log`,
 
-### 💡 Conclusion:
 
-This step helped us remove highly correlated features to simplify the model and prevent multicollinearity issues. We now move on to evaluating relationships between **categorical** and **numerical** variables
+###  Categorical Correlation (Cramér's V)
+
+We evaluated categorical feature relationships after cleaning and correcting data types. No pairs showed dangerously high redundancy (Cramér’s V > 0.7), so we retained all final features. Examples of moderate but useful associations included:
+
+- `payment` and `water_risk_score_log`: 0.54
+- `pump_age_binned` and `region`: 0.46
+- `quantity` and `status_group`: 0.31
+
+These relationships were considered **informative rather than redundant**, and the features were retained for modeling.
+
+
