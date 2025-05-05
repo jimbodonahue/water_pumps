@@ -254,4 +254,18 @@ We evaluated categorical feature relationships after cleaning and correcting dat
 
 These relationships were considered **informative rather than redundant**, and the features were retained for modeling.
 
+## 🔍 Logistic Regression Baseline Model
 
+We trained a baseline **multiclass logistic regression** model to predict pump functionality (`functional`, `non functional`, `functional needs repair`). 
+
+### ✅ Preprocessing Steps
+
+- **Target encoding**: `status_group` was label-encoded into numeric classes.
+- **Feature scaling**: All features were standardized using `StandardScaler`.
+- **Target leakage prevention**: One-hot encoded `status_group_*` columns and the unique `id` column were removed from the training features.
+
+### ⚙️ Cross-Validation Results (5-Fold)
+
+```text
+Fold scores: [0.730, 0.728, 0.724, 0.724, 0.733]
+Mean accuracy: **72.78%**
