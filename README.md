@@ -269,3 +269,17 @@ We trained a baseline **multiclass logistic regression** model to predict pump f
 ```text
 Fold scores: [0.730, 0.728, 0.724, 0.724, 0.733]
 Mean accuracy: **72.78%**
+
+##  Best Logistic Regression Model
+
+After tuning hyperparameters using `GridSearchCV`, we saved the best-performing model — including preprocessing (scaling) — using `joblib`. This makes it easy to reuse the trained model without retraining from scratch.
+
+### Best Model Configuration
+
+The selected model was:
+
+```text
+Pipeline(steps=[
+    ('scaler', StandardScaler()),
+    ('logreg', LogisticRegression(C=0.01, max_iter=1000, solver='saga'))
+])
