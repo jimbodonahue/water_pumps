@@ -264,13 +264,10 @@ We trained a baseline **multiclass logistic regression** model to predict pump f
 - **Feature scaling**: All features were standardized using `StandardScaler`.
 - **Target leakage prevention**: One-hot encoded `status_group_*` columns and the unique `id` column were removed from the training features.
 
-### ⚙️ Cross-Validation Results (5-Fold)
+### 🧾 Train-Test Split and Evaluation
+Before evaluating model performance, we split the dataset using an 80/20 train-test split, stratified by the target class to maintain class balance.
 
-```text
-Fold scores: [0.730, 0.728, 0.724, 0.724, 0.733]
-Mean accuracy: **72.78%**
-
-##  Best Logistic Regression Model
+###  Best Logistic Regression Model
 
 After tuning hyperparameters using `GridSearchCV`, we saved the best-performing model — including preprocessing (scaling) — using `joblib`. This makes it easy to reuse the trained model without retraining from scratch.
 
@@ -283,3 +280,23 @@ Pipeline(steps=[
     ('scaler', StandardScaler()),
     ('logreg', LogisticRegression(C=0.01, max_iter=1000, solver='saga'))
 ])
+### 📊 Evaluation on Test Set
+After training the best model on the training data, we evaluated it on the held-out test set.
+
+
+| Class                   | Precision | Recall | F1-score |
+| ----------------------- | --------- | ------ | -------- |
+| functional              | 0.71      | 0.91   | 0.79     |
+| functional needs repair | 0.62      | 0.03   | 0.06     |
+| non functional          | 0.78      | 0.60   | 0.68     |
+
+### Interpretation
+ - ** ✅ Functional: High recall (0.91) and decent precision (0.71) — the model is excellent at identifying working pumps.
+
+- ** ⚠️ Functional needs repair: Very low recall (0.03) — the model misses most pumps that need repair. This is likely due to class imbalance.
+
+- ** ✅ Non functional: Good precision (0.78) and moderate recall (0.60) — the model does reasonably well in identifying broken pumps.
+
+- ** 📉 Macro F1-score is low (0.51), confirming that performance is uneven across classes.
+
+- ** ⚠️ The model performs well on the dominant classes but struggles to correctly identify minority class samples. To address this, future iterations may apply class balancing techniques or more expressive models like Random Forest or XGBoost.
