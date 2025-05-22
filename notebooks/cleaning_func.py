@@ -1,7 +1,6 @@
 def pumpit_clean(csv):
     # ``` This function requires: numpy, pandas, os, 
     # ```
-
 # Build path to data folder
     # try:
     df = pd.read_csv(csv)
