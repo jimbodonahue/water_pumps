@@ -300,3 +300,39 @@ After training the best model on the training data, we evaluated it on the held-
 - ** 📉 Macro F1-score is low (0.51), confirming that performance is uneven across classes.
 
 - ** ⚠️ The model performs well on the dominant classes but struggles to correctly identify minority class samples. To address this, future iterations may apply class balancing techniques or more expressive models like Random Forest or XGBoost.
+
+### ✅ Final Model Evaluation Summary
+
+We evaluated several machine learning models to predict the functionality of water pumps in Tanzania, with a strong focus on identifying pumps that **need repair** (class 1), which is critical for field operations.
+
+---
+
+#### 📊 Models Compared:
+- Support Vector Machine (SVM)
+- Naive Bayes
+- K-Nearest Neighbors (KNN)
+- Decision Tree
+- Logistic Regression
+- XGBoost
+
+---
+
+#### 🏆 Best All-Around Model: **Decision Tree**
+- **Accuracy**: ~74%
+- **Macro F1**: 0.64
+- **Correctly predicted 275** repair cases (class 1)
+- Better than XGBoost in detecting maintenance needs
+- Simple, interpretable, and easy to deploy
+
+---
+
+#### 🔍 Additional Insights:
+- **Naive Bayes** correctly predicted **421** repair cases — the **highest recall for class 1**, but had **low precision** and **poor overall accuracy (~53%)**
+- **XGBoost** had the best overall accuracy (**~80%**) and macro F1, but **missed many repair cases** (only 193 detected)
+
+---
+
+#### 🎯 Strategic Recommendation:
+- **Use Decision Tree** as the main model — strong balance between interpretability and detecting important cases
+- Use **Naive Bayes as a backup detector** for class 1 to boost sensitivity
+- Consider building a **hybrid or voting model** that gives extra weight to class 1 predictions from Naive Bayes
