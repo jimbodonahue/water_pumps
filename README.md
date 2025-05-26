@@ -279,7 +279,7 @@ The selected model was:
 Pipeline(steps=[
     ('scaler', StandardScaler()),
     ('logreg', LogisticRegression(C=0.01, max_iter=1000, solver='saga'))
-])
+]) ```
 ### 📊 Evaluation on Test Set
 After training the best model on the training data, we evaluated it on the held-out test set.
 
