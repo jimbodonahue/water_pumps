@@ -1,0 +1,14 @@
+kde plot (kernel density estimation)
+
+https://freegisdata.rtwilson.com/
+
+https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/products/VNP46A1/#product-information
+
+contextily
+
+
+https://medium.com/@AlexanderObregon/how-to-analyze-geospatial-data-with-python-dac763b66545
+
+
+for jane
+https://colab.research.google.com/github/Lkruitwagen/teaching_spatial_methods/blob/main/spatial_data_analysis_with_python.ipynb
