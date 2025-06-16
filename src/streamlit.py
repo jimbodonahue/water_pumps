@@ -38,6 +38,7 @@ varlist = ('quantity', 'latitude', 'longitude', 'construction_year',
     'region', 'ward', 'lga', 'basin',  'water_quality', 'permit',
     'status_group', 'predicted')
 df_small = df[np.intersect1d(df.columns, varlist)].dropna()
+df_small = df_small.iloc[0:5000,:]
 # create accuracy value
 accuracy = df.status_group == df.predicted
 df_small = df_small.assign(correct = lambda df_small: df.status_group == df.predicted)
@@ -65,6 +66,10 @@ df_small['fnr_nf'] = fnr_nf
 df_small['nf_f'] = nf_f
 df_small['nf_fnr'] = nf_fnr
 df_small['nf_nf'] =nf_nf
+
+df_f = pd.DataFrame({"Region": df_small['region'], "Functional": f_f, "Functional Needs Repair": f_fnr, "Not Functional": f_nf})
+df_fnr = pd.DataFrame({"Region": df_small['region'], "Functional": fnr_f, "Functional Needs Repair": fnr_fnr, "Not Functional": fnr_nf})
+df_nf = pd.DataFrame({"Region": df_small['region'], "Functional": nf_f, "Functional Needs Repair": nf_fnr, "Not Functional": nf_nf})
 
 # for the heatmap
 df_heat = df_small.groupby('region').correct.sum()
@@ -102,6 +107,12 @@ with st.sidebar:
     selected_status = st.selectbox('Select a status', status_list, index=len(status_list)-1)
     df_selected_status = df_small[df_small.status_group == selected_status]
     df_selected_status_sorted = df_selected_status.sort_values(by="correct", ascending=False)
+    if selected_status == "functional":
+        df_selected_status_correct = df_f
+    elif selected_status == "functional needs repair":
+        df_selected_status_correct = df_fnr
+    else:
+        df_selected_status_correct = df_nf
 
     selected_feature = st.selectbox('Select a feature', varlist, index=len(status_list)-1)
     df_selected_feature = df_small[selected_feature]
@@ -209,54 +220,56 @@ col = st.columns((1.5, 4.5, 2), gap='medium')
 
 # column 0
 with col[0]:
-    st.markdown('#### Gains/Losses')
+    st.markdown('#### Classification Performance')
 
-    df_correct_difference_sorted = calculate_correct_difference(df_small, selected_region)
+    df_correct_difference_sorted = round(calculate_correct_difference(df_small, selected_region)*100, 2)
 
     if selected_status == 'functional':
         first_region_name = df_correct_difference_sorted.region.iloc[0]
         first_region_correct = df_correct_difference_sorted.correct.iloc[0]
-        first_region_delta = df_correct_difference_sorted.percent_correct.iloc[0]
+        first_region_delta = round(df_small[(df_small.region == selected_region) & (df_small.status_group == 'functional')].correct.sum()/len(df_small)*100, 2)
     elif selected_status == 'non functional':
         last_region_name = df_correct_difference_sorted.region.iloc[-1]
-        last_region_correct = format_number(df_correct_difference_sorted.correct.iloc[-1])
-        last_region_delta = format_number(df_correct_difference_sorted.percent_correct.iloc[-1])
+#        last_region_correct = format_number(df_correct_difference_sorted.correct.iloc[-1])
+        first_region_delta = round(df_small[(df_small.region == selected_region) & (df_small.status_group == 'non functional')].correct.sum()/len(df_small)*100, 2)
     elif selected_status == 'functional needs repair':
         first_region_name = df_correct_difference_sorted.region.iloc[0]
         first_region_correct = df_correct_difference_sorted.correct.iloc[0]
-        first_region_delta = df_correct_difference_sorted.percent_correct.iloc[0]
+        first_region_delta = round(df_small[(df_small.region == selected_region) & (df_small.status_group == 'functional needs repair')].correct.sum()/len(df_small)*100, 2)
     else:
         last_state_name = '-'
         last_state_population = '-'
         last_state_delta = ''
-    st.metric(label=first_region_name, value=first_region_correct, delta=first_region_delta)
+    st.metric(label=selected_region, value=first_region_delta)
 
 
-    st.markdown('#### Correctly classified')
+
+
+    st.markdown('#### True values classified:')
 
     if selected_status == 'functional':
         # filter the regional values to reflect outcomes
         # X_Y is true value X, classified as Y
-        f_f_raw = (df_correct_difference_sorted.status_group == 'functional') & (df_correct_difference_sorted.predicted == 'funtional')
+        f_f_raw = (df_small.status_group == 'functional') & (df_small.predicted == 'funtional') & (df_small.region == selected_region)
         f_f = round(f_f_raw.sum()/len(f_f_raw), 3)*100
-        f_fnr_raw = (df_correct_difference_sorted.status_group == 'functional') & (df_correct_difference_sorted.predicted == 'funtional needs repair')
+        f_fnr_raw = (df_small.status_group == 'functional') & (df_small.predicted == 'funtional needs repair') & (df_small.region == selected_region)
         f_fnr = round(f_f_raw.sum()/len(f_fnr_raw), 3)*100
-        f_nf_raw = (df_correct_difference_sorted.status_group == 'functional') & (df_correct_difference_sorted.predicted == 'not funtional')
+        f_nf_raw = (df_small.status_group == 'functional') & (df_small.predicted == 'non functional') & (df_small.region == selected_region)
         f_nf = round(f_f_raw.sum()/len(f_nf_raw), 3)*100
         donut_chart_upper = make_donut(f_f, 'Correctly classified!', 'green')
-        donut_chart_middle= make_donut(f_fnr, 'True value: functional needs repair', 'blue')
-        donut_chart_lower = make_donut(f_nf, 'True value: non functional', 'purple')
+        donut_chart_middle = make_donut(f_fnr, 'True value: functional needs repair', 'blue')
+        donut_chart_lower = make_donut(f_nf, 'True value: not functional', 'red')
     elif selected_status == 'functional needs repair':
-        fnr_f_raw = (df_correct_difference_sorted.status_group == 'functional needs repair') & (df_correct_difference_sorted.predicted == 'funtional')
+        fnr_f_raw = (df_small.status_group == 'functional needs repair') & (df_small.predicted == 'funtional') & (df_small.region == selected_region)
         fnr_f = round(fnr_f_raw.sum()/len(fnr_f_raw), 3)*100
-        fnr_fnr_raw = (df_correct_difference_sorted.status_group == 'functional needs repair') & (df_correct_difference_sorted.predicted == 'funtional needs repair')
+        fnr_fnr_raw = (df_small.status_group == 'functional needs repair') & (df_small.predicted == 'funtional needs repair') & (df_small.region == selected_region)
         fnr_fnr = round(fnr_fnr_raw.sum()/len(fnr_fnr_raw), 3)*100
-        fnr_nf_raw = (df_correct_difference_sorted.status_group == 'functional needs repair') & (df_correct_difference_sorted.predicted == 'not funtional')
+        fnr_nf_raw = (df_small.status_group == 'functional needs repair') & (df_small.predicted == 'non funtional') & (df_small.region == selected_region)
         fnr_nf = round(fnr_nf_raw.sum()/len(fnr_nf_raw), 3)*100
         donut_chart_upper = make_donut(fnr_fnr, 'Correctly classified!', 'green')
         donut_chart_middle= make_donut(fnr_f, 'True value: functional', 'blue')
         donut_chart_lower = make_donut(fnr_nf, 'True value: non functional', 'red')
-    elif selected_status == 'functional needs repair':
+    elif selected_status == 'non functional':
         nf_f_raw = (df_correct_difference_sorted.status_group == 'non functional') & (df_correct_difference_sorted.predicted == 'funtional')
         nf_f = round(nf_f_raw.sum()/len(nf_f_raw), 3)*100
         nf_fnr_raw = (df_correct_difference_sorted.status_group == 'non functional') & (df_correct_difference_sorted.predicted == 'funtional needs repair')
@@ -269,18 +282,18 @@ with col[0]:
     else:
         df_nf_fnr = 0
         df_nf_f = 0
-        df_nf_nf
-        donut_chart_upper = make_donut(nf_fnr, 'Correctly classified!', 'green')
-        donut_chart_middle= make_donut(nf_f, 'True value: functional', 'blue')
-        donut_chart_lower = make_donut(nf_nf, 'True value: functional needs repair', 'red')
+        df_nf = 0
+        donut_chart_upper = make_donut(nf_fnr, 'As functional!', 'green')
+        donut_chart_middle= make_donut(nf_f, 'As functional needs repair:', 'blue')
+        donut_chart_lower = make_donut(nf_nf, 'As non functional', 'red')
 
     accuracy_col = st.columns((0.2, 1, 0.2))
     with accuracy_col[1]:
-        st.write('Correcty')
+        st.write('Functional')
         st.altair_chart(donut_chart_upper)
-        st.write('First false')
+        st.write('Functional needs repair')
         st.altair_chart(donut_chart_middle)
-        st.write('Second False')
+        st.write('Non functional')
         st.altair_chart(donut_chart_lower)
 
 
@@ -292,8 +305,8 @@ with col[1]:
 #    choropleth = make_choropleth(df_selected_status, 'region', 'correct', selected_color_theme)
 #    st.plotly_chart(choropleth, use_container_width=True)
 
-    heatmap = make_heatmap(df_small, 'status', 'region', df_heat, selected_color_theme)
-    st.altair_chart(heatmap, use_container_width=True)
+    # heatmap = make_heatmap(df_small, 'status', 'region', df_heat, selected_color_theme)
+    # st.altair_chart(heatmap, use_container_width=True)
 
 
 # column 2
@@ -319,9 +332,9 @@ with col[2]:
 
     with st.expander('About', expanded=True):
         st.write('''
-            - Data: [U.S. Census Bureau](<https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html>).
-            - :orange[**Gains/Losses**]: states with high inbound/ outbound migration for selected year
-            - :orange[**States Migration**]: percentage of states with annual inbound/ outbound migration > 50,000
+            - Model: XGBoost
+            - :orange[**Performance**]: based on a subset of the test data
+            - :orange[**Something**]: else goes here
             ''')
 
 
