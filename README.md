@@ -337,3 +337,16 @@ We evaluated several machine learning models to predict the functionality of wat
 - **Use Decision Tree** as the main model — strong balance between interpretability and detecting important cases
 - Use **Naive Bayes as a backup detector** for class 1 to boost sensitivity
 - Consider building a **hybrid or voting model** that gives extra weight to class 1 predictions from Naive Bayes
+
+## XGBoost Classifier
+
+For our final submission we used an XGBoost gradient-boosting classifier tuned via grid search. This model achieved ~90 % accuracy on our held-out validation split and proved robust to the mix of numeric and categorical features:
+
+- **Key hyperparameters**  
+  - `n_estimators=200`  
+  - `max_depth=6`  
+  - `learning_rate=0.1`  
+  - `subsample=0.8`  
+  - `colsample_bytree=0.7`  
+  - `scale_pos_weight=1.5` (to counter class imbalance)
+
