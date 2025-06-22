@@ -3,7 +3,6 @@
 
 # Team: 
 ### Fatemeh Ebrahimi
-### Kateryna Ponomarova
 ### James Donahue
 
 ## Project Overview
