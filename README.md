@@ -70,7 +70,7 @@ Extraction of water info:
  -  `extraction_type_group` - The kind of extraction the waterpoint uses
  -  `extraction_type_class` - The kind of extraction the waterpoint uses
 
-Management
+Management:
 -
 - `management` - How the waterpoint is managed
 - `management_group` - How the waterpoint is managed
@@ -80,7 +80,7 @@ Payment:
 - `payment` - What the water costs
 - `payment_type` - What the water costs
 
-Others
+Others:
 - 
 - `num_private` 
 - `population` - Population around the well
