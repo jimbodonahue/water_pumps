@@ -33,12 +33,12 @@ Geo data:
  -  `latitude` - GPS coordinate
  -  `lga` - Geographic location
  -  `ward` - Geographic location
- -  
+  
  - `subvillage` - Geographic location
  -  `region` - Geographic location
  -  `region_code` - Geographic location (coded)
  -  `district_code` - Geographic location (coded)
- -  
+
  -  `gps_height` - Altitude of the well
  -  `basin` - Geographic water basin
 
