@@ -114,7 +114,8 @@ Others:
 - The dataset has **less unique information than it first appears**
 - Careful handling of missing values, feature selection, and encoding will be needed before modeling
 - Geospatial features (lat/lon) offer opportunities for external enrichment like weather or population data
-- 
+selected columns to be compared to drop due to redundant information:   `source`,  `source_type`, `source_class`, `waterpoint_type`,  `waterpoint_type_group`,  `extraction_type`, `extraction_type_group`, `extraction_type_class`,  `payment`, `payment_type`,   `water_quality`,  `quality_group`,  `quantity`,  `quantity_group`
+
 ## 🧠 Observations from visualizing variables
 - Some regions seem to have much better luck than others
 - `quantity` could be a useful binary (enough, else), or even three?
