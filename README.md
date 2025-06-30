@@ -1,8 +1,7 @@
-# water_pumps
-## Water Pump Functionality Prediction
+#  Water Pump Functionality Prediction
 
-# Team: 
-### Fatemeh Ebrahimi
+# Original Team:
+### [Fatemeh Ebrahimi](https://github.com/Fatemeh-Ebrahimi)
 ### James Donahue
 
 ## Project Overview
@@ -25,81 +24,12 @@ This project aims to develop machine learning models to predict the functionalit
 
 ### Dataset Source
 The data comes from Taarifa and the Tanzanian Ministry of Water, which aggregates information about water points across Tanzania.
-# Features in this dataset
-
-Geo data:
- - 
- - `longitude` - GPS coordinate
- -  `latitude` - GPS coordinate
- -  `lga` - Geographic location
- -  `ward` - Geographic location
- - `subvillage` - Geographic location
- -  `region` - Geographic location
- -  `region_code` - Geographic location (coded)
- -  `district_code` - Geographic location (coded)
- -  `gps_height` - Altitude of the well
- -  `basin` - Geographic water basin
-
-Water info:
- - 
- -  `source` - The source of the water
- -  `source_type` - The source of the water
- -  `source_class` - The source of the water
- -  `waterpoint_type` - The kind of waterpoint
- -  `waterpoint_type_group` - The kind of waterpoint 
- -  `amount_tsh` - Total static head (amount of water available to the waterpoint)
- -  `wpt_name` - Name of the waterpoint if there is one
- -  `water_quality` - The quality of the water
- -  `quality_group` - The quality of the water
- -  `quantity` - The quantity of water
- -  `quantity_group` - The quantity of water
-   
-Installation and recorded data:
- - 
- -  `date_recorded` - The date the row was entered
- -  `construction_year` - Year the waterpoint was constructed
- -  `funder` - Who funded the well
- -  `installer` - Organization that installed the well
- -  `recorded_by` - Group entering this row of data
- -  `scheme_management` - Who operates the waterpoint
- -  `scheme_name` - Who operates the waterpoint
-
-Extraction of water info:
- -  
- -  `extraction_type` - The kind of extraction the waterpoint uses
- -  `extraction_type_group` - The kind of extraction the waterpoint uses
- -  `extraction_type_class` - The kind of extraction the waterpoint uses
-
-Management:
--
-- `management` - How the waterpoint is managed
-- `management_group` - How the waterpoint is managed
-
-Payment:
-- 
-- `payment` - What the water costs
-- `payment_type` - What the water costs
-
-Others:
-- 
-- `num_private` 
-- `population` - Population around the well
-- `public_meeting` - True/False
-- `permit` - If the waterpoint is permitted
 
 # 📊 Initial Data Exploration & First Impressions  
 
 ## Dataset Overview
 - The training dataset contains **59,400 rows** and **40 features**.
 - A separate labels file includes the `status_group` target column (pump functionality).
-
-## 🧾 Data Types Summary
-
-| Type     | Count | Description                             |
-|----------|-------|-----------------------------------------|
-| `object` | 30    | Categorical or string-type columns      |
-| `int64`  | 7     | Integer columns (e.g., year, region)    |
-| `float64`| 3     | Float columns (e.g., coordinates)       |
 
 
 ## 🧠 Key Observations from `.describe()` and `.head()`
